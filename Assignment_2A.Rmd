@@ -1,0 +1,22 @@
+---
+title: 'Data 607: Week 2 Assignment 2A'
+author: "Kristoff Oliphant"
+date: "2026-02-06"
+output: html_document
+---
+
+# Assignment 2A: Movie Ratings
+
+## Introduction
+
+For this assignment I want to create a mini user-item rating dataset. The way that I will accomplish this is by identifying six movies or in other words, items that came out recently between 2025-2026, and record the ratings that five users give each movie. For each movie that a user has seen, I'll ask them to provide a rating using a scale between 1-5. I’ll store each rating provided into a PostgreSQL database, then load the data from SQL into R as a dataframe. Using people as users, ratings as integers, and movies as items, this will be the framing that I will follow.
+
+(List of movies released from January 1st, 2025 - December 31st, 2025) <https://www.imdb.com/search/title/?title_type=feature&release_date=2025-01-01,2025-12-31>
+
+## Planned Workflow
+
+For my planned workflow, I’ll use SQL to create tables using the statements CREATE TABLE. After creating the table, I’ll use the ratings I retrieved from the people who watched the movies and insert the data using the statement INSERT INTO. I’ll then use SELECT with JOIN to connect the three tables that include Users, Ratings, and Movies and use the ratings table to act as a bridge for all three. In the event that there’s missing ratings, I’ll use NULL to verify and check in that situation. After completing my work in SQL, I’ll use RPostgres to convert the SQL output into a tidy dataframe. Lastly I’ll use dplyr to count the ratings per user and movie and compute the average ratings for the movies listed in the table.
+
+## Anticipated Challenges
+
+Challenges that I anticipate experiencing are the fact that not everyone will have watched every movie. This inevitably results in missing ratings which can make the data appear sparse. To work around the missingness of data, I’ll use the na.rm = TRUE function to have R ignore the blank values or by using filtering to see who actually provided data.
