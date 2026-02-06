@@ -1,0 +1,20 @@
+---
+title: 'Data 607: Week 2 Assignment 2B'
+author: "Kristoff Oliphant"
+date: "2026-02-06"
+output: html_document
+---
+
+# Assignment 2B: Classification Metrics: Requirements
+
+## Introduction
+
+In this assignment we will be looking at the penguins_predictions.csv that contains three columns. These three columns include pred_female, pred_class, and sex. My objective with this csv and three columns is to calculate the null error rate, use confusion matrices at multiple thresholds, calculate performance metrics, and provide a real-world scenario with a threshold use case. By exploring different probability thresholds, we can assess the model's sensitivity to different thresholds and the results it may provide. This will help determine which threshold is more appropriate for real-world scenarios.
+
+## Planned Workflow
+
+My approach will be to use the distribution plot to visualize the null error rate and create a plot showing the distribution of the actual class. Next is to use the probability thresholds (0.2, 0.5, 0.8) to compute True Positives, False Positives, True Negatives, and False Negatives then present the result as three confusion matrices to calculate the performance metrics. After completing the following I’ll provide a real world scenario where either a 0.2 or 0.8 thresholds would be beneficial.
+
+## Anticipated Challenges
+
+I believe the anticipated challenges I’ll encounter are with the thresholds because it’s not possible to be truly perfect. If you move the threshold higher, you can have a more strict result but you’ll encounter false negatives. If you move it lower, you’ll be more lenient in finding the result you’re looking for but get many false positives.
