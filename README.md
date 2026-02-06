@@ -1,2 +1,2 @@
 # Data607_week2
-Includes assignments Week 2A and 2B
+Includes assignments for Week 2A
