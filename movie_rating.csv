@@ -1,0 +1,22 @@
+"person","movie","rating"
+"Alice","Sinners",5
+"Alice","One battle after another",4
+"Alice","The Housemaid",5
+"Alice","Marty Supreme",3
+"Alice","F1: The movie",4
+"Alice","Avatar: Fire and Ash",5
+"Bob","Sinners",3
+"Bob","One battle after another",NULL
+"Bob","The Housemaid",4
+"Bob","Marty Supreme",NULL
+"Bob","F1: The movie",2
+"Bob","Avatar: Fire and Ash",4
+"Charlie","Sinners",4
+"Charlie","Avatar: Fire and Ash",5
+"Dana","One battle after another",3
+"Dana","The Housemaid",4
+"Dana","Marty Supreme",5
+"Dana","Avatar: Fire and Ash",4
+"Eli","Sinners",2
+"Eli","F1: The movie",3
+"Eli","Avatar: Fire and Ash",5
