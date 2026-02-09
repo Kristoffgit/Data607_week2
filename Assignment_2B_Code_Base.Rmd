@@ -1,0 +1,221 @@
+---
+title: 'Data 607: Week 2 Assignment 2B'
+author: "Kristoff Oliphant"
+date: "2026-02-06"
+output: html_document
+---
+
+# Assignment 2B: Classification Metrics: Requirements
+
+## Introduction
+
+In this assignment we will be looking at the penguins_predictions.csv that contains three columns. These three columns include pred_female, pred_class, and sex. My objective with this csv and three columns is to calculate the null error rate, use confusion matrices at multiple thresholds, calculate performance metrics, and provide a real-world scenario with a threshold use case. By exploring different probability thresholds, we can assess the model's sensitivity to different thresholds and the results it may provide. This will help determine which threshold is more appropriate for real-world scenarios.
+
+## Planned Workflow
+
+My approach will be to use the distribution plot to visualize the null error rate and create a plot showing the distribution of the actual class. Next is to use the probability thresholds (0.2, 0.5, 0.8) to compute True Positives, False Positives, True Negatives, and False Negatives then present the result as three confusion matrices to calculate the performance metrics. After completing the following I’ll provide a real world scenario where either a 0.2 or 0.8 thresholds would be beneficial.
+
+## Anticipated Challenges
+
+I believe the anticipated challenges I’ll encounter are with the thresholds because it’s not possible to be truly perfect. If you move the threshold higher, you can have a more strict result but you’ll encounter false negatives. If you move it lower, you’ll be more lenient in finding the result you’re looking for but get many false positives.
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+csv_text <- ".pred_female,.pred_class,sex
+0.992174619936559,female,female
+0.9542394458977833,female,female
+0.9847350405415397,female,female
+0.187020563810132,male,female
+0.9947012333319794,female,female
+0.9999891482527863,female,female
+0.9593661950650607,female,female
+0.9998613145379593,female,female
+0.999974893182714,female,female
+0.33940584627416204,male,female
+0.9130421763949487,female,female
+0.9987131648823072,female,female
+0.9997950052446297,female,female
+0.9875215879079696,female,female
+0.991437342133606,female,female
+0.9823893160116032,female,female
+0.9944517179776547,female,female
+0.9999990619789272,female,female
+0.9999954830482768,female,female
+0.9929644737654743,female,female
+0.9693856441424548,female,female
+0.9745679031696463,female,female
+0.0820235801819833,male,female
+0.9999984258922114,female,female
+0.997112191317567,female,female
+0.9999981821105356,female,female
+0.9817099624388594,female,female
+0.9996629679005842,female,female
+0.9961499791384407,female,female
+0.999524609147887,female,female
+0.9986986632057736,female,female
+0.9994067374948392,female,female
+0.9999324558636384,female,female
+0.999999997281441,female,female
+0.9970244593762602,female,female
+0.9864786873233454,female,female
+0.9999994591478711,female,female
+0.9855958878479545,female,female
+0.9999403282885542,female,female
+0.1962686529607911,male,male
+1.136398077195011e-6,male,male
+1.2175570169081773e-5,male,male
+2.147737565572072e-8,male,male
+3.6255530799778057e-9,male,male
+0.7763220470210535,female,male
+0.19810795133530923,male,male
+0.9006558259336315,female,male
+0.341247389293891,male,male
+7.697677393947444e-6,male,male
+0.00957597887241457,male,male
+0.0322339024351489,male,male
+0.012587361920143425,male,male
+0.09419956987661482,male,male
+6.428788945633812e-8,male,male
+0.0038444483973643084,male,male
+0.010801865042978864,male,male
+3.508433926808774e-4,male,male
+0.034848878140566586,male,male
+0.005755141650004125,male,male
+0.001647028122507277,male,male
+1.459415881009951e-4,male,male
+2.0234328235257948e-4,male,male
+4.573912466714347e-4,male,male
+0.0032485842243107355,male,male
+2.34711605318072e-6,male,male
+0.10989071680433338,male,male
+1.1691395988377984e-4,male,male
+8.115396363036487e-4,male,male
+0.22073942122655332,male,male
+0.002068877283416093,male,male
+0.035310907858381424,male,male
+5.5990767577895895e-12,male,male
+3.4461546029640466e-4,male,male
+4.5965867279118555e-7,male,male
+7.897592476657778e-7,male,male
+0.2959685441987925,male,male
+0.035876464017552845,male,male
+1.2700596696557653e-7,male,male
+1.545075958908626e-5,male,male
+6.249863611940132e-5,male,male
+0.0012384355283808768,male,male
+8.422343228398077e-6,male,male
+7.641097322652612e-7,male,male
+2.976572910527997e-4,male,male
+0.00861998102892958,male,male
+0.03467976335262879,male,male
+0.0028543571024072234,male,male
+0.016253689598505594,male,male
+6.352643543428016e-7,male,male
+1.1570140197036949e-6,male,male
+3.6591721453638204e-4,male,male
+2.1938538276811137e-5,male,male
+0.8409174345747343,female,male"
+```
+
+```{r}
+penguins <- read_csv(csv_text, show_col_types = FALSE)
+```
+
+```{r}
+penguins <- read_csv(I(csv_text), show_col_types = FALSE)
+```
+
+```{r}
+penguins %>% count(sex)
+```
+
+```{r}
+ggplot(penguins, aes(x = sex, fill = sex)) +
+geom_bar() +
+labs(title = "Distribution of Actual Penguin Sex",
+subtitle = "Calculated to establish the Null Error Rate baseline",
+x = "Actual Sex",
+y = "Count") +
+theme_minimal()
+```
+
+#Threshold 0.5
+
+```{r}
+threshold <- 0.5
+```
+
+```{r}
+metrics_05 <- penguins %>%
+  mutate(pred_at_05 = ifelse(.pred_female > threshold, "female", "male")) %>%
+  summarize(
+    Threshold = threshold,
+    TP = sum(pred_at_05 == "female" & sex == "female"),
+    FP = sum(pred_at_05 == "female" & sex == "male"),
+    TN = sum(pred_at_05 == "male" & sex == "male"),
+    FN = sum(pred_at_05 == "male" & sex == "female")
+  )
+```
+
+```{r}
+metrics_05
+```
+
+#Threshold 0.2
+
+```{r}
+threshold_02 <- 0.2
+metrics_02 <- penguins %>%
+  mutate(pred_at_02 = ifelse(.pred_female > threshold_02, "female", "male")) %>%
+summarize(
+  Threshold = 0.2,
+  TP = sum(pred_at_02 == "female" & sex == "female"),
+  FP = sum(pred_at_02 == "female" & sex == "male"),
+  TN = sum(pred_at_02 == "male" & sex == "male"),
+  FN = sum(pred_at_02 == "male" & sex == "female")
+)
+```
+
+# Threshold 0.8
+
+```{r}
+threshold_08 <- 0.8
+metrics_08 <- penguins %>%
+  mutate(pred_at_08 = ifelse(.pred_female > threshold_08, "female", "male")) %>%
+  summarize(
+    Threshold = 0.8,
+    TP = sum(pred_at_08 == "female" & sex == "female"),
+    FP = sum(pred_at_08 == "female" & sex == "male"),
+    TN = sum(pred_at_08 == "male" & sex == "male"),
+    FN = sum(pred_at_08 == "male" & sex == "female")
+  )
+```
+
+# Combine all three into one table
+
+```{r}
+all_metrics <- bind_rows(metrics_02, metrics_05, metrics_08) %>%
+  mutate(
+    Accuracy = (TP + TN) / (TP + TN + FP + FN),
+    Precision = TP / (TP + FP),
+    Recall = TP / (TP + FN),
+    F1 = 2 * (Precision * Recall) / (Precision + Recall)
+    )
+```
+
+#Final Table
+
+```{r}
+all_metrics
+```
+
+**Null Error Rate** Knowing the null error rate is important since it establishes a baseline for model evaluation. It shows the error rate of a "naive" model that predicts the most frequent class each time. A proper machine learning model must perform better than this baseline to be considered useful.
+
+**Threshold Use Cases**
+
+**0.2 Threshold:** A 0.2 is possibly preferable in the scenario where medical screening is involved. For example, testing for a contagious disease. The cost of a false negative (missing a sick patient) is much higher than the cost of a false positive (a healthy person getting a follow-up test). Catching all the positive cases is ideal.
+
+**0.8 Threshold:** A 0.8 would be preferable in a high stakes decision like an email spam filter or a guilty verdict in a criminal trial. A false positive which would include marking an important work email as spam or putting an innocent person in jail is more damaging than a false negative like letting one spam email pass to your inbox.
